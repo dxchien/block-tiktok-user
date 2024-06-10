@@ -6,6 +6,8 @@
 // @author       dxchien
 // @match        https://www.tiktok.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tiktok.com
+// @updateURL    https://raw.githubusercontent.com/dxchien/block-tiktok-user/main/script.js
+// @downloadURL  https://raw.githubusercontent.com/dxchien/block-tiktok-user/main/script.js
 // @grant        none
 // ==/UserScript==
 
