@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto block user by content
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  try to take over the world!
 // @author       dxchien
 // @match        https://www.tiktok.com/*
@@ -13,6 +13,8 @@
 
 (function() {
     'use strict';
+
+    showNotification("Auto block user by content");
 
     setInterval(()=> {
         var badText = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PAAKY", "PAAAKY", , "PAAAAKY"];
@@ -30,6 +32,7 @@
                     var userName = item.firstChild.attributes["href"].value.substring(2);
                     blockUser(userName);
                     console.log("Found dog: " + userName);
+                    showNotification("Found dog: " + userName);
                     item.innerHTML = "<span style='color:red' ><b>Blocked Dog: " + userName + "</b></span>";
                     return;
                 }
@@ -86,6 +89,28 @@
     function getUserId(html) {
         var t1 = html.substring(html.lastIndexOf('secUid":"') + 9);
         return t1.substring(0, t1.indexOf('"'));
+    }
+
+    // Function to show notification
+    function showNotification(text) {
+        // Check if the browser supports notifications
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notifications.");
+        }
+        // Check if notification permissions have already been granted
+        else if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            var notification = new Notification(text);
+        }
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    var notification = new Notification(text);
+                }
+            });
+        }
     }
 })();
 
