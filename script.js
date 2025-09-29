@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto block user by content
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  try to take over the world!
 // @author       dxchien
 // @match        https://www.tiktok.com/*
@@ -17,7 +17,7 @@
     showNotification("Auto block user by content");
 
     setInterval(()=> {
-        var badText = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PAAKY", "PAAAKY", , "PAAAAKY"];
+        var badText = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", , "PAAAAKY"];
 
         console.log("Start scan dog............................");
         var cssId = getCssId(document.documentElement.innerHTML, "-DivCommentContentContainer");
