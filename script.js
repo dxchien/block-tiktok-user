@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto block user by content
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  try to take over the world!
 // @author       dxchien
 // @match        https://www.tiktok.com/*
@@ -16,20 +16,27 @@
 
     showNotification("Auto block user by content");
 
+    var badWords = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", , "PAAAAKY"];
+    let badText = [];
+    badWords.forEach(word => {
+      badText = badText.concat(generateVariants(word));
+    });
+    badText = [...new Set(badText)];    
+    console.log(badText);
+    console.log("Tổng số biến thể:", badText.length);
+
     setInterval(()=> {
-        var badText = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", , "PAAAAKY"];
-
         console.log("Start scan dog............................");
-        var cssId = getCssId(document.documentElement.innerHTML, "-DivCommentContentContainer");
-        console.log("cssClass=" + "css-" + cssId + "-DivCommentContentContainer");
+        var cssId = getCssId(document.documentElement.innerHTML, "-DivCommentItemWrapper");
+        console.log("cssClass=" + "css-" + cssId + "-DivCommentItemWrapper");
 
-        var comments = document.getElementsByClassName("css-" + cssId + "-DivCommentContentContainer");
+        var comments = document.getElementsByClassName("css-" + cssId + "-DivCommentItemWrapper");
         console.log("Found " + comments.length + " comment");
 
         for (let item of comments) {
             badText.forEach(text => {
                 if(item.innerHTML.toUpperCase().indexOf(text) != -1) {
-                    var userName = item.firstChild.attributes["href"].value.substring(2);
+                    var userName = getUsername(item.innerHTML);
                     blockUser(userName);
                     console.log("Found dog: " + userName);
                     showNotification("Found dog: " + userName);
@@ -39,6 +46,17 @@
             });
         }
     }, 5000);
+
+    function getUsername(str) {
+        const key = 'href="/@';
+        const start = str.indexOf(key);
+        if (start === -1) return null;
+
+        const fromAt = start + key.length;
+        const end = str.indexOf('"', fromAt);
+
+        return str.substring(fromAt, end);
+    }
 
     function blockUser(userName) {
         var userPage = getHtml("https://www.tiktok.com/@" + userName);
@@ -112,5 +130,45 @@
             });
         }
     }
+
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function generateVariants(base) {
+  const variants = new Set();
+
+  // Thêm bản gốc
+  variants.add(base);
+  variants.add(base.toUpperCase());
+  variants.add(base.toLowerCase());
+  variants.add(removeAccents(base));
+
+  // Thay I ↔ Y
+  variants.add(base.replace(/I/g, "Y"));
+  variants.add(base.replace(/Y/g, "I"));
+
+  // Thay C ↔ K
+  variants.add(base.replace(/C/g, "K"));
+  variants.add(base.replace(/K/g, "C"));
+
+  // Lặp thêm chữ A
+  for (let i = 2; i <= 5; i++) {
+    variants.add(base.replace(/A/g, "A".repeat(i)));
+  }
+
+  // Lặp thêm chữ K
+  for (let i = 2; i <= 4; i++) {
+    variants.add(base.replace(/K/g, "K".repeat(i)));
+  }
+
+  // Lặp thêm chữ I / Y
+  for (let i = 2; i <= 4; i++) {
+    variants.add(base.replace(/I/g, "I".repeat(i)));
+    variants.add(base.replace(/Y/g, "Y".repeat(i)));
+  }
+
+  return Array.from(variants);
+}    
 })();
 
