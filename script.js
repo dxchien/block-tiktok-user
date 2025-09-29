@@ -16,7 +16,7 @@
 
     showNotification("Auto block user by content");
 
-    var badWords = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", , "PAAAAKY"];
+    var badWords = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", "PẢKY", "PAAAAKY"];
     let badText = [];
     badWords.forEach(word => {
       badText = badText.concat(generateVariants(word));
