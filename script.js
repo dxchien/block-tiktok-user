@@ -45,7 +45,7 @@
                 }
             });
         }
-    }, 5000);
+    }, 1000);
 
     function getUsername(str) {
         const key = 'href="/@';
