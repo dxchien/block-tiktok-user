@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto block user by content
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.7
 // @description  try to take over the world!
 // @author       dxchien
 // @match        https://www.tiktok.com/*
@@ -16,7 +16,7 @@
 
     showNotification("Auto block user by content");
 
-    var badWords = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", "PẢKY", "PAAAAKY"];
+    var badWords = ["BẮC KÌ", "BẮC KỲ", "PARKI", "PARKY", "PAKY", "PACKAY", "PAKE", "PARKKY", "PAAKY", "PAAAKY", "PẢKY", "PAAAAKY", "PACKY"];
     let badText = [];
     badWords.forEach(word => {
       badText = badText.concat(generateVariants(word));
